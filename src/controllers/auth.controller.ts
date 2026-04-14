@@ -40,7 +40,7 @@ export const register = async (
   });
 
   //generate token
-  const token = generateToken(user.id);
+  const token = generateToken(user.id, res);
 
   return res.status(201).json({
     status: "sucess",
@@ -74,7 +74,7 @@ export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
   }
 
   //generate token
-  const token = generateToken(user.id);
+  const token = generateToken(user.id, res);
 
   return res.status(200).json({
     status: "sucess",
@@ -85,5 +85,16 @@ export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
       },
       token,
     },
+  });
+};
+
+export const logout = async (req: Request, res: Response) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({
+    status: "sucess",
+    message: "logged out sucessfuly",
   });
 };
